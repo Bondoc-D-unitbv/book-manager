@@ -5,8 +5,9 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { RouterModule, Routes } from '@angular/router';
-import { PricePipe } from '../../pipes/price.pipe';
+import { PricePipe } from '../../core/pipes/price.pipe';
 import { BooksPageComponent } from './books-page.component';
 
 const routes: Routes = [{ path: '', component: BooksPageComponent }];
@@ -24,6 +25,7 @@ const routes: Routes = [{ path: '', component: BooksPageComponent }];
     NzButtonModule,
     NzModalModule,
     NzIconModule,
+    NzInputModule, 
     RouterModule.forChild(routes)
   ]
 })

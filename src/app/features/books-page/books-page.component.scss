@@ -1,0 +1,12 @@
+.book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 5px;
+}

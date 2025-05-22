@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Book } from '../../interfaces/book';
+import { Book } from '../../core/interfaces/book';
 
 @Component({
   selector: 'app-books-page',
@@ -32,13 +32,17 @@ export class BooksPageComponent {
       author: ['', Validators.required],
       year: [null, [Validators.required, this.yearValidator]],
       genre: ['', Validators.required],
-      price: [null, Validators.required]
+      price: [null, [Validators.required, Validators.min(1)]]
     });
   }
 
   yearValidator(control: any) {
     const year = control.value;
-    return (year >= 1900 && year <= new Date().getFullYear()) ? null : { invalidYear: true };
+    const currentYear = new Date().getFullYear();
+    if (!year || year < 1900 || year > currentYear) {
+      return { invalidYear: true };
+    }
+    return null;
   }
 
   openAddModal(): void {
@@ -70,10 +74,18 @@ export class BooksPageComponent {
     }
 
     this.isModalVisible = false;
+    this.form.reset();
   }
 
   handleCancel(): void {
     this.isModalVisible = false;
     this.form.reset();
   }
+
+  get title() { return this.form.get('title');}
+  get author() { return this.form.get('author');}
+  get year() { return this.form.get('year');}
+  get genre() { return this.form.get('genre');}
+  get price() { return this.form.get('price');}
+
 }

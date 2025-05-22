@@ -1,0 +1,79 @@
+<button nz-button nzType="primary" (click)="openAddModal()">Add Book</button>
+
+<nz-table
+  [nzData]="books"
+  [nzPageSize]="8"
+  [nzFrontPagination]="true"
+  [nzScroll]="{ x: '1000px' }"
+  [nzShowPagination]="books.length > 8"
+>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Year</th>
+      <th>Genre</th>
+      <th>Price</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of books">
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.year }}</td>
+      <td>{{ book.genre }}</td>
+      <td>{{ book.price | priceFormat }}</td>
+      <td>
+        <button nz-button nzType="link" nzShape="circle" (click)="openEditModal(book)">
+          <i nz-icon nzType="edit"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal   [(nzVisible)]="isModalVisible"
+            nzTitle="{{ isEditMode ? 'Edit Book' : 'Add Book' }}" 
+            (nzOnCancel)="handleCancel()" 
+            (nzOnOk)="handleOk()" 
+            [nzOkDisabled]="form.invalid">
+         
+  <ng-container *ngIf="form">
+    <p style="color: red;">DEBUG: Form should be here</p>
+
+    <form [formGroup]="form" class="book-form">
+      <label>Title</label>
+      <input nz-input formControlName="title" />
+      <div *ngIf="form.get('title')?.invalid && form.get('title')?.touched" class="error">Title required and max 30 chars</div>
+
+      <label>Author</label>
+      <input nz-input formControlName="author" />
+      <div *ngIf="form.get('author')?.invalid && form.get('author')?.touched" class="error">
+      Author is required
+      </div>
+
+      <label>Year</label>
+      <input nz-input type="number" formControlName="year" />
+      <div *ngIf="form.get('year')?.hasError('required') && form.get('year')?.touched" class="error">
+      Year is required
+      </div>
+      <div *ngIf="form.get('year')?.hasError('invalidYear') && form.get('year')?.touched" class="error">
+      Year must be between 1900 and current year
+      </div>
+
+      <label>Genre</label>
+      <input nz-input formControlName="genre" />
+      <div *ngIf="form.get('genre')?.invalid && form.get('genre')?.touched" class="error">
+      Genre is required
+      </div>
+
+      <label>Price</label>
+      <input nz-input type="number" formControlName="price" />
+      <div *ngIf="form.get('price')?.invalid && form.get('price')?.touched" class="error">
+      Price is required
+      </div>
+
+    </form>
+  </ng-container>
+</nz-modal>
